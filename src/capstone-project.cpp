@@ -3,7 +3,7 @@
 /******************************************************/
 
 #include "Particle.h"
-#line 1 "/home/ianp/Documents/iot2021/capstone/capstone-project/src/capstone-project.ino"
+#line 1 "/home/pop-os/iot-capstone/iot2021-capstone-project/src/capstone-project.ino"
 #include "MQTT.h"
 #include "oled-wing-adafruit.h"
 #include "string"
@@ -16,7 +16,7 @@ double getLargest(double *arr, int size);
 double getSmallest(double *arr, int size);
 double averageArray(double *arr, int size);
 void isr();
-#line 4 "/home/ianp/Documents/iot2021/capstone/capstone-project/src/capstone-project.ino"
+#line 4 "/home/pop-os/iot-capstone/iot2021-capstone-project/src/capstone-project.ino"
 using namespace std;
 
 SYSTEM_THREAD(ENABLED);
@@ -103,24 +103,7 @@ void loop()
     delay(5000);
   }
 
-  double tempArray[4];
-
-  if (bTemp > 0)
-  {
-    tempArray[0] = bTemp;
-  }
-  else if (iTemp > 0)
-  {
-    tempArray[1] = iTemp;
-  }
-  else if (kTemp > 0)
-  {
-    tempArray[2] = kTemp;
-  }
-  else if (vTemp > 0)
-  {
-    tempArray[3] = vTemp;
-  }
+  double tempArray[3]{bTemp, iTemp, vTemp};
 
   display.clearDisplay();
   display.setTextSize(1);
@@ -157,9 +140,10 @@ void loop()
   }
   else if (wasAPressed)
   {
-    display.printlnf("hottest: %f", getLargest(tempArray, 4));
-    display.printlnf("coldest: %f", getSmallest(tempArray, 4));
-    display.printlnf("average: %f", averageArray(tempArray, 4));
+    Serial.printlnf("%f, %f, %f", bTemp, iTemp, vTemp);
+    display.printlnf("hottest: %f", getLargest(tempArray, 3));
+    display.printlnf("coldest: %f", getSmallest(tempArray, 3));
+    display.printlnf("average: %f", averageArray(tempArray, 3));
   }
   else if (wasBPressed)
   {
